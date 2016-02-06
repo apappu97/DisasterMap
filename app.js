@@ -30,8 +30,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.get('/', function(req, res){
-  res.send('hello world');
+app.post('/sms', function(req, res){
+  if (twilio.validateExpressRequest(req, authToken)) {
+    var twiml = new twilio.TwimlResponse();
+
+    twiml.message('Hi!  Thanks for checking out my app!');
+
+    res.type('text/xml');
+    res.send(twiml.toString());
+  }
+  else {
+    res.send('You\'re not using the Disaster Map Service as intended. Play nice :)');
+  }
 });
 
 app.listen(8080, "127.0.0.1", function() {
