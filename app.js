@@ -31,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/sms', function(req, res) {
   console.log(req);
+  var cookie = req.body.cookies;
   var addr = "";
   var status = "";
   var finalstring = req.body.Body.toUpperCase();
@@ -40,9 +41,10 @@ app.post('/sms', function(req, res) {
   console.log("Status " + status);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
-  twiml.message("We received your request");
+  twiml.message("We received your request. You inputed your address as:" + os.EOL
+  + addr + os.EOL + "and your status as:" + os.EOL + status);
   res.writeHead(200, {'Content-Type': 'text/xml'});
-  //res.cookie('number': )
+
   res.end(twiml.toString());
 });
 
