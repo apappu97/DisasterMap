@@ -35,7 +35,7 @@ app.post('/sms', function(req, res){
   var twilio = require('twilio');
   var resp = new twilio.TwimlResponse();
 
-    twiml.message('Hi! Thanks for checking out my app!');
+    resp.message('Hi! Thanks for checking out my app!');
 
     res.writeHead(200, {
       'Content-Type':'text/xml'
