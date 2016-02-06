@@ -21,7 +21,7 @@ exports.addressToCoordinates = function(address) {
     address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
     request(address, function(error, response, body){
        if (!error && response.statusCode == 200) {
-           //console.log(body);
+           console.log(body);
            //console.log("Lat: " + JSON.parse(body[0].results[0]));
            //console.log("Lon: " + JSON.parse(body[0].results[0]));
        } else {
