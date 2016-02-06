@@ -55,7 +55,7 @@ if (app.get('env') === 'development') {
   });
 }
 
-app.get('/sms', function(req, res){
+app.get('/', function(req, res){
   res.send('hello world');
 });
 
