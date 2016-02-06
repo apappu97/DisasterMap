@@ -31,16 +31,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.post('/sms', function(req, res) {
+  console.log(res);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
-  twiml.message("");
+  twiml.message("We received your request");
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
 
 app.listen(8080, function() {
   twilio.messages.create({
-    body: "This is a message from your local nonprofit. Please send us your address and needs in the following format:"+ os.EOL +
+    body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
     "ADDRESS:"+ os.EOL + "STATUS:",
     to: "+12102683553",
     from: "+12108800132"
