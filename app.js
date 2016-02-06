@@ -44,7 +44,7 @@ app.post('/sms', function(req, res){
   //}
 });
 
-app.listen(8080, "127.0.0.1", function() {
+app.listen(8080, function() {
   twilio.messages.create({
     body: "Jenny please?! I love you <3",
     to: "+12102683553",
