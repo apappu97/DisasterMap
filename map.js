@@ -24,6 +24,8 @@ exports.addressToCoordinates = function(address) {
            console.log(body);
            console.log("Lat: " + JSON.parse(body.results[0].geometry.location.lat));
            console.log("Lon: " + JSON.parse(body.results.geometry.location.lng));
+       } else {
+           console.log(error);
        }
     });
     return address;
