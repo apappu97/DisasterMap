@@ -18,7 +18,7 @@ function init() {
 }
 
 exports.addressToCoordinates = function(address) {
-    address = "https://maps.googleapis.com/maps/api/geocode/json?" + address.split(" ").join("+") + "&key=AIzaSyB1zP1yILbaQTz49V7BnkUIqMHXTmwtxp0";
+    address = "https://maps.googleapis.com/maps/api/geocode/json?" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
     request(address, function(error, response, body){
        if (!error && response.statusCode == 200) {
            console.log(body);
