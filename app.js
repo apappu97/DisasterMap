@@ -33,13 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/sms', function(req, res) {
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
-  if (req.query.Body == 'hello') {
-    twiml.message('Hi!');
-  } else if(req.query.Body == 'bye') {
-    twiml.message('Goodbye');
-  } else {
-    twiml.message('No Body param match, Twilio sends this in the request to your server.');
-  }
+  twiml.message(req);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
