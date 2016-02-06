@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
+var os = require('os');
 var app = express();
 
 
@@ -40,8 +40,8 @@ app.post('/sms', function(req, res) {
 
 app.listen(8080, function() {
   twilio.messages.create({
-    body: "This is a message from your local nonprofit. Please send us your address and needs in the following format:\n" +
-    "ADDRESS:"+ "STATUS:",
+    body: "This is a message from your local nonprofit. Please send us your address and needs in the following format:"+ os.EOL +
+    "ADDRESS:"+ os.EOL + "STATUS:",
     to: "+12102683553",
     from: "+12108800132"
   }, function(err, message) {
