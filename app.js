@@ -8,6 +8,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var os = require('os');
 var S = require('string');
+var map = require('./map.js')
 var app = express();
 
 
@@ -44,7 +45,7 @@ app.post('/sms', function(req, res) {
   twiml.message("We received your request. You inputed your address as:" + os.EOL
   + addr + os.EOL + "and your status as:" + os.EOL + status);
   res.writeHead(200, {'Content-Type': 'text/xml'});
-
+  console.log(map.addressToCoordinates(address));
   res.end(twiml.toString());
 });
 
