@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/sms', function(req, res) {
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
-  twiml.message(req.body);
+  twiml.message("hi");
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
