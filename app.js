@@ -4,11 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+
+var accountSid = 'AC2a8b15d166303da6d57a97dcc25f3b3e';
+var authToken = "0f73d916916b73a1786aee7c951df1a8";
+var twilio = require('twilio')(accountSid, authToken);
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,5 +65,13 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
+app.listen(8080, "127.0.0.1", function() {
+  twilio.messages.create({
+    body: "Jenny please?! I love you <3",
+    to: "+12102683553",
+    from: "+12108800132"
+  }, function(err, message) {
+    process.stdout.write(message.sid);
+  });
+});
 module.exports = app;
