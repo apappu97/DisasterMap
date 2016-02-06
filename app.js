@@ -45,7 +45,7 @@ app.post('/sms', function(req, res) {
   twiml.message("We received your request. You inputed your address as:" + os.EOL
   + addr + os.EOL + "and your status as:" + os.EOL + status);
   res.writeHead(200, {'Content-Type': 'text/xml'});
-  console.log(map.addressToCoordinates(address));
+  console.log(map.addressToCoordinates(addr));
   res.end(twiml.toString());
 });
 
