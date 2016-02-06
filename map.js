@@ -1,3 +1,4 @@
+var request = require('request');
 var exports = module.exports = {};
 var map;
 var centerCoords = {lat: 37.090, lng: -95.712};
@@ -16,10 +17,15 @@ function init() {
 }
 
 exports.addressToCoordinates = function(address) {
-    address = address.split(" ").join("+");
+    address = "https://maps.googleapis.com/maps/api/geocode/json?" + address.split(" ").join("+") + "&key=AIzaSyB1zP1yILbaQTz49V7BnkUIqMHXTmwtxp0";
+    request(address, function(error, response, body){
+       if (!error && response.statusCode == 200) {
+           console.log("Lat: " + body.results.geometry.location.lat);
+           console.log("Lon: " + body.results.geometry.location.lng);
+       }
+    });
     return address;
-    //https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyB1zP1yILbaQTz49V7BnkUIqMHXTmwtxp0
-}
+};
 
 function addMarker(coordinates, contentBody){
 
