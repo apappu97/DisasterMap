@@ -1,4 +1,5 @@
 var request = require('request');
+var bodyParser = require('body-parser');
 var exports = module.exports = {};
 var map;
 var centerCoords = {lat: 37.090, lng: -95.712};
