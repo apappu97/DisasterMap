@@ -55,6 +55,11 @@ if (app.get('env') === 'development') {
   });
 }
 
+app.get('/sms', function(req, res){
+  res.send('hello world');
+});
+
+
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
