@@ -34,9 +34,11 @@ app.post('/sms', function(req, res){
   //if (twilio.validateExpressRequest(req, authToken)) {
     var twiml = new twilio.TwimlResponse();
 
-    twiml.message('Hi!  Thanks for checking out my app!');
+    twiml.message('Hi! Thanks for checking out my app!');
 
-    res.type('text/xml');
+    res.writeHead(200, {
+      'Content-Type':'text/xml'
+    });
     res.send(twiml.toString());
   //}
   //else {
