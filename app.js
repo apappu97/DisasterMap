@@ -35,7 +35,7 @@ app.post('/sms', function(req, res) {
   var cookie = req.body.cookies;
   var addr = "";
   var status = "";
-  var finalstring = req.body.Body.toUpperCase();
+  var finalstring = req.body.Body;
   addr = S(finalstring).between('ADDRESS: ', 'STATUS: ').s;
   status = S(finalstring).between('STATUS:').s;
   console.log("Address " + addr);
