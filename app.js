@@ -33,14 +33,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/sms', function(req, res) {
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
-  twiml.message("hi");
+  twiml.message("");
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
 
 app.listen(8080, function() {
   twilio.messages.create({
-    body: "Jenny please?! I love you <3",
+    body: "This is a message from your local nonprofit. Please send us your address and needs in the following format:\n" +
+    "ADDRESS:/nSTATUS:",
     to: "+12102683553",
     from: "+12108800132"
   }, function(err, message) {
