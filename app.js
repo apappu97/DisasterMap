@@ -32,7 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/sms', function(req, res){
   //if (twilio.validateExpressRequest(req, authToken)) {
-    var twiml = new twilio.TwimlResponse();
+  var twilio = require('twilio');
+  var resp = new twilio.TwimlResponse();
 
     twiml.message('Hi! Thanks for checking out my app!');
 
