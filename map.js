@@ -22,8 +22,8 @@ exports.addressToCoordinates = function(address) {
     request(address, function(error, response, body){
        if (!error && response.statusCode == 200) {
            console.log(body);
-           console.log("Lat: " + JSON.parse(body.results[0].geometry.location.lat));
-           console.log("Lon: " + JSON.parse(body.results.geometry.location.lng));
+           console.log("Lat: " + JSON.parse(body.results[0]));
+           console.log("Lon: " + JSON.parse(body.results[0]));
        } else {
            console.log(error);
        }
