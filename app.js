@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/sms', function(req, res) {
-  console.log(res);
+  console.log(req);
   var addr = "";
   var status = "";
   var finalstring = req.body.Body.toUpperCase();
@@ -42,6 +42,7 @@ app.post('/sms', function(req, res) {
   var twiml = new twilio.TwimlResponse();
   twiml.message("We received your request");
   res.writeHead(200, {'Content-Type': 'text/xml'});
+  //res.cookie('number': )
   res.end(twiml.toString());
 });
 
