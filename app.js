@@ -33,9 +33,9 @@ app.post('/sms', function(req, res) {
   console.log(res);
   var addr = "";
   var status = "";
-  res.body.Body = res.body.Body.toUpperCase();
-  addr = S(res.body.Body).between('ADDRESS:', 'STATUS:').s;
-  status = S(res.body.Body).between('STATUS:').s;
+  var finalstring = req.body.Body.toUpperCase();
+  addr = S(finalstring).between('ADDRESS:', 'STATUS:').s;
+  status = S(finalstring).between('STATUS:').s;
   console.log("Address " + addr);
   console.log("Status " + status);
   var twilio = require('twilio');
