@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var os = require('os');
+var S = require('string');
 var app = express();
 
 
@@ -28,10 +29,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 app.post('/sms', function(req, res) {
   console.log(res);
+  var addr = "";
+  var status = "";
+  addr = S(res.body.body).between('ADDRESS:', 'STATUS:').s;
+  status = S(res.body.body).between('STATUS:').s;
+  console.log("Address " + addr);
+  console.log("Status " + status);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
   twiml.message("We received your request");
