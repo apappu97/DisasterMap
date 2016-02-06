@@ -30,17 +30,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.post('/sms', twilio, function(req, res){
-  //if (twilio.validateExpressRequest(req, authToken)) {
-  var resp = new twilio.TwimlResponse();
-
-    resp.message('Hi! Thanks for checking out my app!');
-
-    res.writeHead(200, {
-      'Content-Type':'text/xml'
-    });
-    res.send(twiml.toString());
-
+app.get('/sms', function(req, res) {
+  var twilio = require('twilio');
+  var twiml = new twilio.TwimlResponse();
+  if (req.query.Body == 'hello') {
+    twiml.message('Hi!');
+  } else if(req.query.Body == 'bye') {
+    twiml.message('Goodbye');
+  } else {
+    twiml.message('No Body param match, Twilio sends this in the request to your server.');
+  }
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
 });
 
 app.listen(8080, function() {
