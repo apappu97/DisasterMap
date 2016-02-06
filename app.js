@@ -41,7 +41,7 @@ app.post('/sms', function(req, res) {
 app.listen(8080, function() {
   twilio.messages.create({
     body: "This is a message from your local nonprofit. Please send us your address and needs in the following format:\n" +
-    "ADDRESS:/nSTATUS:",
+    "ADDRESS:"+ "STATUS:",
     to: "+12102683553",
     from: "+12108800132"
   }, function(err, message) {
