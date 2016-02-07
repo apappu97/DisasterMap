@@ -41,8 +41,11 @@ app.post('/sms', function(req, res) {
   var finalstring = req.body.Body;
   addr = S(finalstring).between('ADDRESS: ', 'STATUS: ').s;
   status = S(finalstring).between('STATUS:').s;
-  console.log("Address " + addr);
-  console.log("Status " + status);
+    if (addr == "" || status == "") {
+        twiml.message("That doesn't follow the format of:" +
+            os.EOL + "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Please try again");
+        res.end(twiml.toString());
+    }
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
@@ -51,15 +54,17 @@ app.post('/sms', function(req, res) {
   unirest.get(address, lat)
       .end(function (response, lat) {
         lat = response.body.results[0].geometry.location.lat;
-        console.log(lat);
+          if (typeof lat == undefined) {
+              twiml.message("We couldn't find that location. Try again, with the format:" +
+                  os.EOL + "ADDRESS:"+ os.EOL + "STATUS:");
+              res.end(twiml.toString());
+          }
         unirest.get(address, lng)
             .end(function (response, lng) {
               lng = response.body.results[0].geometry.location.lng;
-              console.log(lng);
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
               res.writeHead(200, {'Content-Type': 'text/xml'});
-
               res.end(twiml.toString());
             });
       });
@@ -69,7 +74,7 @@ app.listen(8080, function() {
   twilio.messages.create({
     body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
     "ADDRESS:"+ os.EOL + "STATUS:",
-    to: "+12622717436",
+    to: "+17146035949",
     from: "+12108800132"
   }, function(err, message) {
     process.stdout.write(message.sid);
