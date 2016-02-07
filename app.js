@@ -35,6 +35,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/sms', function(req, res) {
+    var twilio = require('twilio');
+    var twiml = new twilio.TwimlResponse();
   var cookie = req.body.cookies;
   var addr = "";
   var status = "";
@@ -46,8 +48,6 @@ app.post('/sms', function(req, res) {
             os.EOL + "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Please try again");
         res.end(twiml.toString());
     }
-  var twilio = require('twilio');
-  var twiml = new twilio.TwimlResponse();
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   var lat;
   var lng;
