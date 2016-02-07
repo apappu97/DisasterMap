@@ -11,7 +11,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var os = require('os');
 var S = require('string');
-var map = require('./map.js')
+var map = require('./map.js');
+var async = require('async');
 var app = express();
 
 
@@ -48,23 +49,25 @@ app.post('/sms', function(req, res) {
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   var lat;
   var lng;
-  unirest.get(address)
-      .end(function (response) {
+  unirest.get(address, lat)
+      .end(function (response, lat) {
         lat = response.body.results[0].geometry.location.lat;
         console.log(lat);
+        unirest.get(address, lng)
+            .end(function (response, lng) {
+              lng = response.body.results[0].geometry.location.lng;
+              console.log(lng);
+              twiml.message("We received your request. You inputed your address as:" + os.EOL
+                  + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
+              res.writeHead(200, {'Content-Type': 'text/xml'});
+
+              res.end(twiml.toString());
+            });
       });
-  unirest.get(address)
-      .end(function (response) {
-        lng = response.body.results[0].geometry.location.lng;
-        console.log(lng);
-      });
 
 
-  twiml.message("We received your request. You inputed your address as:" + os.EOL
-  + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
-  res.writeHead(200, {'Content-Type': 'text/xml'});
 
-  res.end(twiml.toString());
+
 });
 
 app.listen(8080, function() {
