@@ -17,28 +17,6 @@ function init() {
   addMarker(centerCoords, contentString);
 }
 
-exports.addressToCoordinatesLat = function(address) {
-    address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
-    request(address, function(error, response, body){
-       if (!error && response.statusCode == 200) {
-           return body.results[0].geometry.location.lat;
-       } else {
-           console.log(error);
-       }
-    })
-};
-
-exports.addressToCoordinatesLng = function(address) {
-    address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
-    request(address, function(error, response, body){
-        if (!error && response.statusCode == 200) {
-            return body.results[0].geometry.location.lng;
-        } else {
-            console.log(error);
-        }
-    })
-};
-
 function addMarker(coordinates, contentBody){
 
     var infowindow = new google.maps.InfoWindow({

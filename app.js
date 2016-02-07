@@ -46,7 +46,6 @@ app.post('/sms', function(req, res) {
     if (addr == "" || status == "") {
         twiml.message("That doesn't follow the format of:" +
             os.EOL + "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Please try again");
-        console.log("test case 1");
         res.writeHead(200, {'Content-Type': 'text/xml'});
         res.end(twiml.toString());
         return;
@@ -60,7 +59,6 @@ app.post('/sms', function(req, res) {
               twiml.message("We couldn't find that location. Try again, with the format:" +
                   os.EOL + "ADDRESS:"+ os.EOL + "STATUS:");
               res.writeHead(200, {'Content-Type': 'text/xml'});
-              console.log("test case 2");
               res.end(twiml.toString());
               return;
           }
@@ -72,7 +70,6 @@ app.post('/sms', function(req, res) {
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
               res.writeHead(200, {'Content-Type': 'text/xml'});
-                console.log("test case 3");
                 res.end(twiml.toString());
             });
       });
@@ -87,22 +84,6 @@ app.listen(8080, function() {
   }, function(err, message) {
     process.stdout.write(message.sid);
   });
-  console.log(addressToCoordinatesLat("401 Happy Trail"));
 });
 
-var addressToCoordinatesLat = function(address) {
-  address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
-  unirest.get(address)
-      .end(function (response) {
-        return response.body.results[0].geometry.location.lat;
-      });
-};
-
-var addressToCoordinatesLng = function(address) {
-  address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
-  unirest.get(address)
-      .end(function (response) {
-        return response.body.results[0].geometry.location.lng;
-      });
-};
 module.exports = app;
