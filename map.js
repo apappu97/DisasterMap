@@ -26,7 +26,7 @@ exports.addressToCoordinates = function(address) {
        } else {
            console.log(error);
        }
-    });
+    })
     return address;
 };
 
