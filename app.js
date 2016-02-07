@@ -53,12 +53,13 @@ app.post('/sms', function(req, res) {
   var lng;
   unirest.get(address, lat)
       .end(function (response, lat) {
-        lat = response.body.results[0].geometry.location.lat;
-          if (typeof lat == undefined) {
+          if (response.body.results.length == 0) {
               twiml.message("We couldn't find that location. Try again, with the format:" +
                   os.EOL + "ADDRESS:"+ os.EOL + "STATUS:");
               res.end(twiml.toString());
           }
+        lat = response.body.results[0].geometry.location.lat;
+
         unirest.get(address, lng)
             .end(function (response, lng) {
               lng = response.body.results[0].geometry.location.lng;
@@ -74,7 +75,7 @@ app.listen(8080, function() {
   twilio.messages.create({
     body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
     "ADDRESS:"+ os.EOL + "STATUS:",
-    to: "+17146035949",
+    to: "+12102683553",
     from: "+12108800132"
   }, function(err, message) {
     process.stdout.write(message.sid);
