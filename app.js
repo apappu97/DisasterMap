@@ -64,6 +64,7 @@ app.listen(8080, function() {
   }, function(err, message) {
     process.stdout.write(message.sid);
   });
+  console.log(addressToCoordinatesLat("401 Happy Trail"));
 });
 
 var addressToCoordinatesLat = function(address) {
