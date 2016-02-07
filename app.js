@@ -59,6 +59,7 @@ app.post('/sms', function(req, res) {
           if (response.body.results.length == 0) {
               twiml.message("We couldn't find that location. Try again, with the format:" +
                   os.EOL + "ADDRESS:"+ os.EOL + "STATUS:");
+              res.writeHead(200, {'Content-Type': 'text/xml'});
               console.log("test case 2");
               res.end(twiml.toString());
               return;
