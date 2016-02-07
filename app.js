@@ -44,6 +44,7 @@ app.post('/sms', function(req, res) {
   console.log("Status " + status);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
+  var addres = "401 Happy Trail";
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   var lat;
   var lng;
