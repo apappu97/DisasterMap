@@ -44,10 +44,21 @@ app.post('/sms', function(req, res) {
   console.log("Status " + status);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
-  var lat = addressToCoordinatesLat(addr);
-  console.log(lat);
-  var lng = addressToCoordinatesLng(addr);
-  console.log(lng);
+  address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
+  var lat;
+  var lng;
+  unirest.get(address)
+      .end(function (response) {
+        lat = response.body.results[0].geometry.location.lat;
+        console.log(lat);
+      });
+  unirest.get(address)
+      .end(function (response) {
+        lng = response.body.results[0].geometry.location.lng;
+        console.log(lng);
+      });
+
+
   twiml.message("We received your request. You inputed your address as:" + os.EOL
   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
   res.writeHead(200, {'Content-Type': 'text/xml'});
