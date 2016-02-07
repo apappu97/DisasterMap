@@ -57,7 +57,7 @@ app.post('/sms', function(req, res) {
               lng = response.body.results[0].geometry.location.lng;
               console.log(lng);
               twiml.message("We received your request. You inputed your address as:" + os.EOL
-                  + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
+                  + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
               res.writeHead(200, {'Content-Type': 'text/xml'});
 
               res.end(twiml.toString());
