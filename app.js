@@ -69,7 +69,7 @@ var addressToCoordinatesLat = function(address) {
   request(address, function(error, response, body){
     if (!error && response.statusCode == 200) {
       var res = body;
-      console.log(res.results[0].geometry.location.lat);
+      console.log(res);
 
       return res.results[0].geometry.location.lat;
     } else {
@@ -83,7 +83,7 @@ var addressToCoordinatesLng = function(address) {
   request(address, function(error, response, body){
     if (!error && response.statusCode == 200) {
       var res = body;
-      console.log(res.results[0].geometry.location.lng);
+      console.log(res);
       return res.results[0].geometry.location.lng;
     } else {
       console.log(error);
