@@ -42,10 +42,12 @@ app.post('/sms', function(req, res) {
   console.log("Status " + status);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
+  var lat = map.addressToCoordinatesLat(addr);
+  var lng = map.addressToCoordinatesLng(addr);
   twiml.message("We received your request. You inputed your address as:" + os.EOL
-  + addr + os.EOL + "and your status as:" + os.EOL + status);
+  + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
   res.writeHead(200, {'Content-Type': 'text/xml'});
-  //console.log(map.addressToCoordinates(addr));
+
   res.end(twiml.toString());
 });
 
