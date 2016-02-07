@@ -63,4 +63,4 @@ var j = {
     "status" : "OK"
 };
 
-console.log(j.results[0].geometry.location.lat);
+console.log(j.results[0].geometry.location.lng);

@@ -42,8 +42,8 @@ app.post('/sms', function(req, res) {
   console.log("Status " + status);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
-  var lat = map.addressToCoordinatesLat(addr);
-  var lng = map.addressToCoordinatesLng(addr);
+  var lat = addressToCoordinatesLat(addr);
+  var lng = addressToCoordinatesLng(addr);
   twiml.message("We received your request. You inputed your address as:" + os.EOL
   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
   res.writeHead(200, {'Content-Type': 'text/xml'});
@@ -61,4 +61,26 @@ app.listen(8080, function() {
     process.stdout.write(message.sid);
   });
 });
+
+addressToCoordinatesLat = function(address) {
+  address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
+  request(address, function(error, response, body){
+    if (!error && response.statusCode == 200) {
+      return body.results[0].geometry.location.lat;
+    } else {
+      console.log(error);
+    }
+  })
+};
+
+addressToCoordinatesLng = function(address) {
+  address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
+  request(address, function(error, response, body){
+    if (!error && response.statusCode == 200) {
+      return body.results[0].geometry.location.lng;
+    } else {
+      console.log(error);
+    }
+  })
+};
 module.exports = app;
