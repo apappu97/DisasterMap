@@ -47,6 +47,7 @@ app.post('/sms', function(req, res) {
         twiml.message("That doesn't follow the format of:" +
             os.EOL + "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Please try again");
         res.end(twiml.toString());
+        return;
     }
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   var lat;
@@ -57,6 +58,7 @@ app.post('/sms', function(req, res) {
               twiml.message("We couldn't find that location. Try again, with the format:" +
                   os.EOL + "ADDRESS:"+ os.EOL + "STATUS:");
               res.end(twiml.toString());
+              return;
           }
         lat = response.body.results[0].geometry.location.lat;
 
