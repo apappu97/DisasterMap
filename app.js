@@ -1,4 +1,4 @@
-// Necessary/not so necessary libs
+//
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -34,16 +34,12 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// Twilio makes a request here to have a message sent back to the user
 app.post('/sms', function(req, res) {
+    var cookie = req.body.cookies;
     var addr = "";
     var status = "";
-    // Get the json from the body
     var finalstring = req.body.Body;
-    // String manipulation to get the Address and Status
     addr = (S(finalstring).between('ADDRESS:', 'STATUS: ').s).trim();
-    // Formats the string for the url
     addr = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
         address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
     status = (S(finalstring).between('STATUS:').s).trim();
@@ -51,25 +47,22 @@ app.post('/sms', function(req, res) {
     var twiml = new twilio.TwimlResponse();
     var lat;
     var lng;
-    // Series of API calls to Google to get the geocode info
     unirest.get(addr, lat)
         .end(function(response, lat) {
-            // traversing the json to get what we want
             lat = response.body.results[0].geometry.location.lat;
             unirest.get(address, lng)
                 .end(function(response, lng) {
                     lng = response.body.results[0].geometry.location.lng;
+                    console.log(lng);
                     twiml.message("We received your request. You sent your address as:" + os.EOL + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
                     res.writeHead(200, {
                         'Content-Type': 'text/xml'
                     });
-                    // Sent that baby off!
                     res.end(twiml.toString());
                 });
         });
 });
 
-// Initializes a text to the phone number
 app.listen(8080, function() {
     twilio.messages.create({
         body: "This is a message from your local nonprofit. Please send us your address and needs in the following format." + os.EOL +
@@ -79,5 +72,22 @@ app.listen(8080, function() {
     }, function(err, message) {
         process.stdout.write(message.sid);
     });
+    console.log(addressToCoordinatesLat("401 Happy Trail"));
 });
+
+var addressToCoordinatesLat = function(address) {
+    address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
+    unirest.get(address)
+        .end(function(response) {
+            return response.body.results[0].geometry.location.lat;
+        });
+};
+
+var addressToCoordinatesLng = function(address) {
+    address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
+    unirest.get(address)
+        .end(function(response) {
+            return response.body.results[0].geometry.location.lng;
+        });
+};
 module.exports = app;
