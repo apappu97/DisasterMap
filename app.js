@@ -63,10 +63,6 @@ app.post('/sms', function(req, res) {
               res.end(twiml.toString());
             });
       });
-
-
-
-
 });
 
 app.listen(8080, function() {
