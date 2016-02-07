@@ -64,7 +64,7 @@ app.listen(8080, function() {
   });
 });
 
-addressToCoordinatesLat = function(address) {
+var addressToCoordinatesLat = function(address) {
   address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   request(address, function(error, response, body){
     if (!error && response.statusCode == 200) {
@@ -76,7 +76,7 @@ addressToCoordinatesLat = function(address) {
   })
 };
 
-addressToCoordinatesLng = function(address) {
+var addressToCoordinatesLng = function(address) {
   address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   request(address, function(error, response, body){
     if (!error && response.statusCode == 200) {
