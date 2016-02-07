@@ -31,7 +31,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/sms', function(req, res) {
-  console.log(req);
   var cookie = req.body.cookies;
   var addr = "";
   var status = "";
@@ -43,7 +42,9 @@ app.post('/sms', function(req, res) {
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
   var lat = addressToCoordinatesLat(addr);
+  console.log(lat);
   var lng = addressToCoordinatesLng(addr);
+  console.log(lng);
   twiml.message("We received your request. You inputed your address as:" + os.EOL
   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your lng is: " + lng + " and your lat is: " + lat);
   res.writeHead(200, {'Content-Type': 'text/xml'});
