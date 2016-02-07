@@ -2,7 +2,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var request = require('request');
+var unirest = require('unirest');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -68,28 +68,17 @@ app.listen(8080, function() {
 
 var addressToCoordinatesLat = function(address) {
   address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
-  request(address, function(error, response, body){
-    if (!error && response.statusCode == 200) {
-      var res = body;
-      console.log(res.results);
-
-      return res.results[0].geometry.location.lat;
-    } else {
-      console.log(error);
-    }
-  })
+  unirest.get(address)
+      .end(function (response) {
+        return response.body.results[0].geometry.location.lat;
+      });
 };
 
 var addressToCoordinatesLng = function(address) {
   address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
-  request(address, function(error, response, body){
-    if (!error && response.statusCode == 200) {
-      var res = body;
-      console.log(res.results);
-      return res.results[0].geometry.location.lng;
-    } else {
-      console.log(error);
-    }
-  })
+  unirest.get(address)
+      .end(function (response) {
+        return response.body.results[0].geometry.location.lng;
+      });
 };
 module.exports = app;
