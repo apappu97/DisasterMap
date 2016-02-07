@@ -37,7 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/sms', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
-  var cookie = req.body.cookies;
   var addr = "";
   var status = "";
   var finalstring = req.body.Body;
@@ -51,7 +50,8 @@ app.post('/sms', function(req, res) {
         return;
     }
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
-  var lat;
+  // THESE STORE THE LATITUDE AND LONGITUDE
+    var lat;
   var lng;
   unirest.get(address, lat)
       .end(function (response, lat) {
@@ -75,6 +75,7 @@ app.post('/sms', function(req, res) {
       });
 });
 
+// Initializes the server
 app.listen(8080, function() {
   twilio.messages.create({
     body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
