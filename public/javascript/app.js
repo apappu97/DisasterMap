@@ -6,12 +6,11 @@ var unirest = require('unirest');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var mongoose = require('mongoose');
+var Person = require('./app/models/location');
 
-var routes = require('../../routes/index');
-var users = require('../../routes/users');
 var os = require('os');
 var S = require('string');
-var map = require('./map.js');
 var async = require('async');
 var app = express();
 
@@ -20,7 +19,7 @@ var accountSid = 'AC2a8b15d166303da6d57a97dcc25f3b3e';
 var authToken = "0f73d916916b73a1786aee7c951df1a8";
 var twilio = require('twilio')(accountSid, authToken);
 
-
+var coordinates = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,7 +50,7 @@ app.post('/sms', function(req, res) {
     }
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   // THESE STORE THE LATITUDE AND LONGITUDE
-    var lat;
+  var lat;
   var lng;
   unirest.get(address, lat)
       .end(function (response, lat) {
@@ -69,10 +68,22 @@ app.post('/sms', function(req, res) {
               lng = response.body.results[0].geometry.location.lng;
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
+              updateCoordinates(lat, lng, status); // store coordinates in here
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
             });
       });
+      // store in database
+      var person = new Person({
+        latitude: lat,
+        longitude: lng,
+        content:status
+      });
+      person.save(function(err){
+        if(err) throw err;
+
+        console.log('User saved successfully!');
+      })
 });
 
 // Initializes the server
@@ -86,5 +97,15 @@ app.listen(8080, function() {
     process.stdout.write(message.sid);
   });
 });
+
+function updateCoordinates(lat, lng, status){
+  coordinates.push(lat);
+  coordinates.push(lng);
+  coordiantes.push(status);
+}
+
+function updateMap(coordinatesArray){
+  coordinatesArray.forEach()
+}
 
 module.exports = app;
