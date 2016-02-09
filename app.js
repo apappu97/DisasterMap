@@ -82,7 +82,7 @@ app.post('/sms', function(req, res) {
 
                 console.log('User saved successfully!');
               })
-              initMap();
+              initMap(person);
               Person.find({}, function(err, eachPerson){
                 updateMap(JSON.parse(eachPerson));
               })
