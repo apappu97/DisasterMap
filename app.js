@@ -68,7 +68,7 @@ app.post('/sms', function(req, res) {
               lng = response.body.results[0].geometry.location.lng;
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
-              updateCoordinates(lat, lng, status); // store coordinates in here
+              //updateCoordinates(lat, lng, status); // store coordinates in here
               // store in database
               var person = new Person({
                 latitude: lat,
