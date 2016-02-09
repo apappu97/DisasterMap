@@ -84,7 +84,7 @@ app.post('/sms', function(req, res) {
               })
               initMap();
               Person.find({}, function(err, eachPerson){
-                updateMap(JSON.parse(eachPerson);
+                updateMap(JSON.parse(eachPerson));
               })
 
               res.writeHead(200, {'Content-Type': 'text/xml'});
