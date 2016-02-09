@@ -69,21 +69,22 @@ app.post('/sms', function(req, res) {
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
               updateCoordinates(lat, lng, status); // store coordinates in here
+              // store in database
+              var person = new Person({
+                latitude: lat,
+                longitude: lng,
+                content: status
+              });
+              
+              person.save(function(err){
+                if(err) throw err;
+
+                console.log('User saved successfully!');
+              })
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
             });
       });
-      // store in database
-      var person = new Person({
-        latitude: lat,
-        longitude: lng,
-        content:status
-      });
-      person.save(function(err){
-        if(err) throw err;
-
-        console.log('User saved successfully!');
-      })
 });
 
 // Initializes the server
