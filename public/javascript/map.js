@@ -9,7 +9,17 @@ function create_map(lat, lng){
   });
 }
 
-function initMap(eachPerson) {
+function initMap() {
+  var coordinateData;
+  var request = new XMLHttpRequest();
+  request.open('GET', '/data');
+  request.addEventListener('load', function(event{
+    if(request.status === 200){
+      coordinateData = JSON.parse(request.responseText);
+    }
+  }))
+  request.send();
+
   map = create_map(eachPerson.latitude, eachPerson.longitude); // centers at user's lat and lng
   // for(var i = 0; i < coordinatesArray.length; i+=3){
   //   var lat = coordinatesArray[i];

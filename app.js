@@ -20,7 +20,7 @@ var accountSid = 'AC2a8b15d166303da6d57a97dcc25f3b3e';
 var authToken = "0f73d916916b73a1786aee7c951df1a8";
 var twilio = require('twilio')(accountSid, authToken);
 
-var coordinates = [];
+//var coordinates = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -105,6 +105,11 @@ app.listen(8080, function() {
   });
 });
 
+app.get('/data', function(req, res){
+  // get all the mongo data and send it back as JSON
+  var data = JSON.stringify(Person.find().toArray());
+  res.send(data); 
+})
 
 function updateMap(personObject){
   addMarker(personObject);
