@@ -9,21 +9,25 @@ function create_map(lat, lng){
   });
 }
 
-function init(lat, lng, coordinatesArray) {
-  map = create_map(lat, lng); // centers at an arbitrary lat and lng
-  for(var i = 0; i < coordinatesArray.length; i+=3){
-    var lat = coordinatesArray[i];
-    var lng = coordinatesArray[i+1];
-    var status = coordinatesArray[i+2];
-    var coordinates = {lat, lng};
-    addMarker(coordinates, status)
-  }
+function initMap(eachPerson) {
+  map = create_map(eachPerson.latitude, eachPerson.longitude); // centers at user's lat and lng
+  // for(var i = 0; i < coordinatesArray.length; i+=3){
+  //   var lat = coordinatesArray[i];
+  //   var lng = coordinatesArray[i+1];
+  //   var status = coordinatesArray[i+2];
+  //   var coordinates = {lat, lng};
+  //   addMarker(coordinates, status)
+  // }
 }
 
-function addMarker(coordinates, contentBody){
+function addMarker(eachPerson){
+    var lat = eachPerson.latitude;
+    var lng = eachPerson.longitude;
+    var coordinates = {lat, lng};
+    var status = eachPerson.contentBody;
 
     var infowindow = new google.maps.InfoWindow({
-      content: contentBody
+      content: status
     });
 
     var marker = new google.maps.Marker({

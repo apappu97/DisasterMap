@@ -74,7 +74,7 @@ app.post('/sms', function(req, res) {
               var person = new Person({
                 latitude: lat,
                 longitude: lng,
-                content: status
+                contentBody: status
               });
               
               person.save(function(err){
@@ -82,6 +82,11 @@ app.post('/sms', function(req, res) {
 
                 console.log('User saved successfully!');
               })
+              initMap();
+              Person.find({}, function(err, eachPerson){
+                updateMap(JSON.parse(eachPerson);
+              })
+
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
             });
@@ -100,14 +105,9 @@ app.listen(8080, function() {
   });
 });
 
-function updateCoordinates(lat, lng, status){
-  coordinates.push(lat);
-  coordinates.push(lng);
-  coordiantes.push(status);
-}
 
-function updateMap(coordinatesArray){
-  coordinatesArray.forEach()
+function updateMap(personObject){
+  addMarker(personObject);
 }
 
 module.exports = app;

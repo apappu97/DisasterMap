@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var locationSchema = new Schema({
 	lat: Number,
 	lng: Number,
-	status: String 
+	contentBody: String 
 });
 
 var Person = mongoose.model('Person', locationSchema);
