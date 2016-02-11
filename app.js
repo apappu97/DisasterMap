@@ -34,6 +34,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.get('/', function(req, res){
+  res.render('index');
+})
+
 app.post('/sms', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
@@ -106,15 +111,5 @@ app.listen(8080, function() {
     process.stdout.write(message.sid);
   });
 });
-
-app.get('/data', function(req, res){
-  // get all the mongo data and send it back as JSON
-  var data = JSON.stringify(Person.find().toArray());
-  res.send(data); 
-})
-
-// function updateMap(personObject){
-//   addMarker(personObject);
-// }
 
 module.exports = app;
