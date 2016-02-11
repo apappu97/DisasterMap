@@ -8,7 +8,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var Person = require('./models/location');
-var mongo = require('./mongodb');
 mongoose.connect('mongodb://heroku_h1mbknwv:s8d03rgc20qjhls0kh2ep66em@ds049848.mongolab.com:49848/heroku_h1mbknwv');
 
 var os = require('os');
