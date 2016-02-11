@@ -22,7 +22,7 @@ function initMap() {
       });
     }
     setTimeout(initMap, 1000);
-  }));
+  });
   request.send();
 
    // centers at user's lat and lng
