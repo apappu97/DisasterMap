@@ -94,11 +94,17 @@ app.post('/sms', function(req, res) {
 });
 
 app.get('/data', function(req, res){
-  var data = Person.find().toArray();
-  var dataJSON = JSON.parse(data);
-  res.writeHead(200, {'Content-Type': 'application/json'});
-  res.end(dataJSON);
-})
+  Person.find({}, function(err, markers) {
+    var markerMap = [];
+
+    markers.forEach(function(marker) {
+      markerMap.push(marker);
+    });
+    var dataJSON = JSON.stringify(markerMap);
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(dataJSON);
+    }); 
+});
 
 // Initializes the server
 app.listen(8080, function() {
