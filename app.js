@@ -110,6 +110,10 @@ app.get('/data', function(req, res){
 
 // Initializes the server
 app.listen(8080, function() {
+  Person.remove({}, function(err) { 
+   console.log('collection removed') 
+});
+
   twilio.messages.create({
     body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
     "ADDRESS:"+ os.EOL + "STATUS:",
