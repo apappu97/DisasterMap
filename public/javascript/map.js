@@ -4,7 +4,7 @@ function create_map(lat, lng){
 	var centerCoords = {lat, lng}
   return new google.maps.Map(document.getElementById('map'), {
     center:  centerCoords,
-    zoom: 8
+    zoom: 2
   });
 }
 
