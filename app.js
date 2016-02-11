@@ -82,16 +82,24 @@ app.post('/sms', function(req, res) {
 
                 console.log('User saved successfully!');
               })
-              initMap(person);
-              Person.find({}, function(err, eachPerson){
-                updateMap(JSON.parse(eachPerson));
-              })
+              //get cordinates and update
+              //initMap(person);
+              // Person.find({}, function(err, eachPerson){
+              //   updateMap(JSON.parse(eachPerson));
+              // })
 
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
             });
       });
 });
+
+app.get('/data', function(req, res){
+  var data = Person.find().toArray();
+  var dataJSON = JSON.parse(data);
+  res.writeHead(200, {'Content-Type': 'application/json'});
+  res.end(dataJSON);
+})
 
 // Initializes the server
 app.listen(8080, function() {
@@ -111,8 +119,8 @@ app.get('/data', function(req, res){
   res.send(data); 
 })
 
-function updateMap(personObject){
-  addMarker(personObject);
-}
+// function updateMap(personObject){
+//   addMarker(personObject);
+// }
 
 module.exports = app;

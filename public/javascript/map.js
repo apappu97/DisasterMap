@@ -1,5 +1,4 @@
-var map;
-//var centerCoords = {lat: 37.090, lng: -95.712};
+var map;s
 
 function create_map(lat, lng){
 	var centerCoords = {lat, lng}
@@ -10,17 +9,22 @@ function create_map(lat, lng){
 }
 
 function initMap() {
-  var coordinateData;
   var request = new XMLHttpRequest();
   request.open('GET', '/data');
-  request.addEventListener('load', function(event{
+  request.addEventListener('load', function(){
     if(request.status === 200){
-      coordinateData = JSON.parse(request.responseText);
+      var coordinateData = JSON.parse(request.responseText);
+      // remake Map
+      map = create_map(coordinateData[0].latitude, coordinateData[0].longitude);
+      coordinateData.forEach(function(eachPerson){
+        addMarker(eachPerson);
+      });
     }
-  }))
+    setTimeout(initMap, 1000);
+  }));
   request.send();
 
-  map = create_map(eachPerson.latitude, eachPerson.longitude); // centers at user's lat and lng
+   // centers at user's lat and lng
   // for(var i = 0; i < coordinatesArray.length; i+=3){
   //   var lat = coordinatesArray[i];
   //   var lng = coordinatesArray[i+1];
