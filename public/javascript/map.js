@@ -9,6 +9,7 @@ function create_map(lat, lng){
 }
 
 function initMap() {
+  console.log("init Map entered");
   var request = new XMLHttpRequest();
   request.open('GET', '/data');
   request.addEventListener('load', function(){
