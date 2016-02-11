@@ -1,4 +1,4 @@
-var map;s
+var map;
 
 function create_map(lat, lng){
 	var centerCoords = {lat, lng}
