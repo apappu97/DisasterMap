@@ -80,7 +80,7 @@ app.post('/sms', function(req, res) {
                 longitude: lng,
                 contentBody: status
               });
-              
+              console.log(person);
               person.save(function(err){
                 if(err) throw err;
 
@@ -101,6 +101,7 @@ app.get('/data', function(req, res){
       markerMap.push(marker);
     });
     var dataJSON = JSON.stringify(markerMap);
+    console.log("datajason " + dataJSON);
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(dataJSON);
     }); 
