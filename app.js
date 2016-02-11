@@ -56,8 +56,8 @@ app.post('/sms', function(req, res) {
     }
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   // THESE STORE THE LATITUDE AND LONGITUDE
-  var lat;
-  var lng;
+  var lat = 0;
+  var lng = 0;
   unirest.get(address, lat)
       .end(function (response, lat) {
           if (response.body.results.length == 0) {
