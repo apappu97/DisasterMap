@@ -114,8 +114,7 @@ app.post('/phone', function(req, res) {
         body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:"
     }, function(err, text) {
-        console.log('You sent: '+ text.body);
-        console.log('Current status of this text message is: '+ text.status);
+        console.log("oh no");
     }, function() {
         res.body = "works";
         res.writeHead(200, {'Content-Type': 'application/json'});
