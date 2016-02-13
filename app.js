@@ -108,7 +108,7 @@ app.get('/data', function(req, res){
 });
 
 app.post('/phone', function(req, res) {
-    console.log(req.body);
+    console.log(req);
     twilio.sms.messages.post({
         to: req.body.number,
         from:'+12108800132',
