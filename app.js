@@ -108,6 +108,7 @@ app.get('/data', function(req, res){
 });
 
 app.post('/phone', function(req, res) {
+    var twilio = require('twilio');
     var number = req.body.number;
     twilio.messages.create({
         body: "This is a message from your local nonprofit. Please send us your address and needs in the following format." + os.EOL +
