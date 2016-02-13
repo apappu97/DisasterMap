@@ -109,7 +109,7 @@ app.get('/data', function(req, res){
 
 app.post('/phone', function(req, res) {
     twilio.sms.messages.post({
-        to: req.body,
+        to: req.body.number,
         from:'+12108800132',
         body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:"
