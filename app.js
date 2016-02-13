@@ -108,16 +108,21 @@ app.get('/data', function(req, res){
 });
 
 app.post('/phone', function(req, res) {
-    var twilio = require('twilio');
-    var number = req.body.number;
-    twilio.messages.create({
-        body: "This is a message from your local nonprofit. Please send us your address and needs in the following format." + os.EOL +
-        "ADDRESS:" + os.EOL + "STATUS:",
-        to: number + "",
-        from: "12108800132"
-    }, function(err, message){
-        process.stdout.write(message.sid);
+    twilio.sms.messages.post({
+        to: req.body,
+        from:'+14503334455',
+        body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
+        "ADDRESS:"+ os.EOL + "STATUS:"
+    }, function(err, text) {
+        console.log('You sent: '+ text.body);
+        console.log('Current status of this text message is: '+ text.status);
+    }, function() {
+        res.body = "works";
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end();
+
     });
+
 });
 
 // Initializes the server
@@ -135,5 +140,4 @@ app.listen(8080, function() {
     process.stdout.write(message.sid);
   });
 });
-
 module.exports = app;
