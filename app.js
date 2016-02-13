@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', function(req, res){
-  res.render('index');
+  res.render('/public/index.html');
 });
 
 app.post('/sms', function(req, res) {
@@ -109,19 +109,20 @@ app.get('/data', function(req, res){
 
 app.post('/phone', function(req, res) {
     console.log(req);
-    twilio.sms.messages.post({
-        to: req.body.number,
-        from:'+12108800132',
-        body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
-        "ADDRESS:"+ os.EOL + "STATUS:"
-    }, function(err, text) {
-        console.log("oh no");
-    }, function() {
-        res.body = "works";
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end();
-
-    });
+    console.log(req.body);
+    //twilio.sms.messages.post({
+    //    to: req.body.number,
+    //    from:'+12108800132',
+    //    body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
+    //    "ADDRESS:"+ os.EOL + "STATUS:"
+    //}, function(err, text) {
+    //    console.log("oh no");
+    //}, function() {
+    //    res.body = "works";
+    //    res.writeHead(200, {'Content-Type': 'application/json'});
+    //    res.end();
+    //
+    //});
 
 });
 
