@@ -12,7 +12,6 @@ mongoose.connect('mongodb://heroku_h1mbknwv:s8d03rgc20qjhls0kh2ep66em@ds049848.m
 
 var os = require('os');
 var S = require('string');
-var async = require('async');
 var app = express();
 
 
@@ -37,11 +36,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res){
   res.render('index');
-})
+});
 
 app.post('/sms', function(req, res) {
-    var twilio = require('twilio');
-    var twiml = new twilio.TwimlResponse();
+  var twilio = require('twilio');
+  var twiml = new twilio.TwimlResponse();
   var addr = "";
   var status = "";
   var finalstring = req.body.Body;
@@ -85,7 +84,7 @@ app.post('/sms', function(req, res) {
                 if(err) throw err;
 
                 console.log('User saved successfully!');
-              })
+              });
 
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
@@ -98,7 +97,19 @@ app.get('/data', function(req, res){
   var dataJSON = JSON.parse(data);
   res.writeHead(200, {'Content-Type': 'application/json'});
   res.end(dataJSON);
-})
+});
+
+app.post('/phone', function(req, res) {
+    var number = req.body.number;
+    twilio.messages.create({
+        body: "This is a message from your local nonprofit. Please send us your address and needs in the following format." + os.EOL +
+        "ADDRESS:" + os.EOL + "STATUS:",
+        to: number + "",
+        from: "12108800132"
+    }, function(err, message){
+        process.stdout.write(message.sid);
+    });
+});
 
 // Initializes the server
 app.listen(8080, function() {
