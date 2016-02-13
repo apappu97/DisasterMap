@@ -94,11 +94,17 @@ app.post('/sms', function(req, res) {
 });
 
 app.get('/data', function(req, res){
-<<<<<<< HEAD
-  var data = Person.find().toArray();
-  var dataJSON = JSON.parse(data);
-  res.writeHead(200, {'Content-Type': 'application/json'});
-  res.end(dataJSON);
+    Person.find({}, function(err, markers) {
+        var markerMap = [];
+
+        markers.forEach(function(marker) {
+            markerMap.push(marker);
+        });
+        var dataJSON = JSON.stringify(markerMap);
+        console.log("datajason " + dataJSON);
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(dataJSON);
+    });
 });
 
 app.post('/phone', function(req, res) {
@@ -111,19 +117,6 @@ app.post('/phone', function(req, res) {
     }, function(err, message){
         process.stdout.write(message.sid);
     });
-=======
-  Person.find({}, function(err, markers) {
-    var markerMap = [];
-
-    markers.forEach(function(marker) {
-      markerMap.push(marker);
-    });
-    var dataJSON = JSON.stringify(markerMap);
-    console.log("datajason " + dataJSON);
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(dataJSON);
-    }); 
->>>>>>> e45366bedf1bff5588a462906563f8a0895f25f7
 });
 
 // Initializes the server
