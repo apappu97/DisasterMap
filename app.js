@@ -55,8 +55,8 @@ app.post('/sms', function(req, res) {
     }
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
   // THESE STORE THE LATITUDE AND LONGITUDE
-  var lat;
-  var lng;
+  var lat = 0;
+  var lng = 0;
   unirest.get(address, lat)
       .end(function (response, lat) {
           if (response.body.results.length == 0) {
@@ -67,19 +67,20 @@ app.post('/sms', function(req, res) {
               return;
           }
         lat = response.body.results[0].geometry.location.lat;
-
+        console.log("Typeof lat;" + typeof(lat));
         unirest.get(address, lng)
             .end(function (response, lng) {
               lng = response.body.results[0].geometry.location.lng;
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
+              console.log("Typeof LNG;" + typeof(lng));
 
               var person = new Person({
                 latitude: lat,
                 longitude: lng,
                 contentBody: status
               });
-              
+              console.log(person);
               person.save(function(err){
                 if(err) throw err;
 
@@ -93,6 +94,7 @@ app.post('/sms', function(req, res) {
 });
 
 app.get('/data', function(req, res){
+<<<<<<< HEAD
   var data = Person.find().toArray();
   var dataJSON = JSON.parse(data);
   res.writeHead(200, {'Content-Type': 'application/json'});
@@ -109,10 +111,27 @@ app.post('/phone', function(req, res) {
     }, function(err, message){
         process.stdout.write(message.sid);
     });
+=======
+  Person.find({}, function(err, markers) {
+    var markerMap = [];
+
+    markers.forEach(function(marker) {
+      markerMap.push(marker);
+    });
+    var dataJSON = JSON.stringify(markerMap);
+    console.log("datajason " + dataJSON);
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end(dataJSON);
+    }); 
+>>>>>>> e45366bedf1bff5588a462906563f8a0895f25f7
 });
 
 // Initializes the server
 app.listen(8080, function() {
+  Person.remove({}, function(err) { 
+   console.log('collection removed') 
+});
+
   twilio.messages.create({
     body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
     "ADDRESS:"+ os.EOL + "STATUS:",

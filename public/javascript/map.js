@@ -4,7 +4,7 @@ function create_map(lat, lng){
 	var centerCoords = {lat, lng}
   return new google.maps.Map(document.getElementById('map'), {
     center:  centerCoords,
-    zoom: 8
+    zoom: 3
   });
 }
 
@@ -21,18 +21,9 @@ function initMap() {
         addMarker(eachPerson);
       });
     }
-    setTimeout(initMap, 1000);
+    setTimeout(initMap, 10000);
   });
   request.send();
-
-   // centers at user's lat and lng
-  // for(var i = 0; i < coordinatesArray.length; i+=3){
-  //   var lat = coordinatesArray[i];
-  //   var lng = coordinatesArray[i+1];
-  //   var status = coordinatesArray[i+2];
-  //   var coordinates = {lat, lng};
-  //   addMarker(coordinates, status)
-  // }
 }
 
 function addMarker(eachPerson){
