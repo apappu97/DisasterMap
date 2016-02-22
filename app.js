@@ -109,7 +109,7 @@ app.get('/data', function(req, res){
 
 function sendMssg(num) {
     twilio.messages.create({
-        body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
+        body: "This is a message from your local nonprofit. Please send us your address (city, state, and country if possible) and needs in the following format."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:",
         to: num,
         from: "+12108800132"
@@ -124,7 +124,7 @@ app.post('/phone', function(req, res) {
     twilio.sms.messages.create({
         to: num,
         from:"+12108800132",
-        body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
+        body:"This is a message from your local nonprofit. Please send us your address (city, state, and country if possible) and needs in the following format."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:"
     }, function(error, message) {
         if (!error) {
