@@ -39,7 +39,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/sms', function(req, res) {
-    console.log(req.body);
+    console.log("we received a text from: " + req.body.From);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
   var addr = "";
