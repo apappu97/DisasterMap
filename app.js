@@ -84,7 +84,6 @@ app.post('/sms', function(req, res) {
               console.log(person);
               person.save(function(err){
                 if(err) throw err;
-
                 console.log('User saved successfully!');
               });
 
