@@ -1,4 +1,5 @@
 var map;
+var prevMarkerNumber = 0;
 
 function create_map(lat, lng){
 	var centerCoords = {lat, lng}
@@ -15,11 +16,14 @@ function initMap() {
   request.addEventListener('load', function(){
     if(request.status === 200){
       var coordinateData = JSON.parse(request.responseText);
-      // remake Map
-      map = create_map(coordinateData[0].latitude, coordinateData[0].longitude);
-      coordinateData.forEach(function(eachPerson){
-        addMarker(eachPerson);
-      });
+      if(coordinateData.length !== prevMarkerNumber){
+        // remake Map
+        map = create_map(coordinateData[0].latitude, coordinateData[0].longitude);
+        coordinateData.forEach(function(eachPerson){
+          addMarker(eachPerson);
+        });
+        prevMarkerNumber = coordinateData.length;
+      }
     }
     setTimeout(initMap, 10000);
   });
