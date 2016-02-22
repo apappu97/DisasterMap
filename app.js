@@ -107,23 +107,45 @@ app.get('/data', function(req, res){
     });
 });
 
+function sendMssg(num) {
+    twilio.messages.create({
+        body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
+        "ADDRESS:"+ os.EOL + "STATUS:",
+        to: num,
+        from: "+12108800132"
+    });
+}
+
 app.post('/phone', function(req, res) {
     console.log("number " + req.body.number);
-    twilio.sms.messages.post({
-        to: req.body.number,
-        from:'+12108800132',
+    //sendMssg(req.body.number);
+    var num = req.body.number;
+    JSON.stringify(num);
+    twilio.sms.messages.create({
+        to: '+2102683553',
+        from:"+12108800132",
         body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:"
-    }, function(err, text) {
-        res.body.numberIsValid = false;
-        res.writeHead(404, {'Content-Type': 'application/json'});
-        res.end();
-    }, function() {
-        res.body.numberIsValid = true;
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end();
+    }, function(error, message) {
+        // The HTTP request to Twilio will run asynchronously. This callback
+        // function will be called when a response is received from Twilio
+        // The "error" variable will contain error information, if any.
+        // If the request was successful, this value will be "falsy"
+        if (!error) {
+            // The second argument to the callback will contain the information
+            // sent back by Twilio for the request. In this case, it is the
+            // information about the text messsage you just sent:
+            console.log('Success! The SID for this SMS message is:');
+            console.log(message.sid);
 
+            console.log('Message sent on:');
+            console.log(message.dateCreated);
+        } else {
+            console.log('Oops! There was an error.');
+        }
     });
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end();
 
 });
 // init
