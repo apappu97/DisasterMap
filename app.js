@@ -124,7 +124,7 @@ app.post('/phone', function(req, res) {
     twilio.sms.messages.create({
         to: '+12102683553',
         from:"+12108800132",
-        body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
+        body:"TESTThis is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:"
     }, function(error, message) {
         // The HTTP request to Twilio will run asynchronously. This callback
