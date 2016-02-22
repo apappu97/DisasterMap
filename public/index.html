@@ -105,7 +105,7 @@ function checkAndParsePhone() {
               //TODO Test for (), spaces
 
               if(phoneReg.test(num)){
-               var parse = "+" + parseInt(num.match(phoneReg)[0]);
+               var parse = "%2B" + parseInt(num.match(phoneReg)[0]);
               } 
               else {alert("Please enter a valid phone number.");}
 
@@ -114,22 +114,22 @@ function checkAndParsePhone() {
 
 function sendNumber(num) {
 
-    url = "https://disastermap.herokuapp.com/phone/" 
+    var data = "number=" + num;
 
-    var xmlhttp = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
 
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            alert(xmlhttp.responseText);
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            console.log(this.responseText);
         }
-    }
+    });
 
-    xmlhttp.open("POST", url, true);
-    xmlhttp.setRequestHeader("Content-Type", "application/json");
-    xmlhttp.send(JSON.stringify({number: num}));
+    xhr.open("POST", "http://disastermap.herokuapp.com/phone");
+    xhr.setRequestHeader("cache-control", "no-cache");
+    xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
 
-    console.log(xmlhttp.status);
-    return xmlhttp.status == 200;
+    xhr.send(data);
 }
   
 </script>
