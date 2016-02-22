@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  padding: 10%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -21,8 +21,8 @@ h2 {
 }
 
 #map {
-	margin-bottom: 50px;
-	margin-top: 25px;
+	margin-bottom: 5%;
+	margin-top: 5%;
 }
 
 
