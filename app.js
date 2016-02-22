@@ -75,7 +75,7 @@ app.post('/sms', function(req, res) {
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
               console.log("Typeof LNG;" + typeof(lng));
-               // status += " (This status was sent from the number:" +
+                status += " (This status was sent from the number: " + req.body.From + ")";
                 var person = new Person({
                 latitude: lat,
                 longitude: lng,
