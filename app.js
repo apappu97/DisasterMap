@@ -122,7 +122,7 @@ app.post('/phone', function(req, res) {
     var num = req.body.number;
     JSON.stringify(num);
     twilio.sms.messages.create({
-        to: '+2102683553',
+        to: '+12102683553',
         from:"+12108800132",
         body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:"
