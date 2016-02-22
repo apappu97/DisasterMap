@@ -1,5 +1,5 @@
 body {
-  padding: 10%;
+  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -21,13 +21,12 @@ h2 {
 }
 
 #map {
-	margin-bottom: 5%;
-	margin-top: 5%;
+	margin-bottom: 30px;
+	margin-top: 25px;
 }
 
 
 button {
-
 	font-size: 50px;
 }
 
