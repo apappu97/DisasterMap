@@ -39,6 +39,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/sms', function(req, res) {
+    console.log("we received a text from: " + req.body.From);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse();
   var addr = "";
@@ -74,8 +75,8 @@ app.post('/sms', function(req, res) {
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
               console.log("Typeof LNG;" + typeof(lng));
-
-              var person = new Person({
+                status += " (This status was sent from the number: " + req.body.From + ")";
+                var person = new Person({
                 latitude: lat,
                 longitude: lng,
                 contentBody: status
@@ -109,22 +110,25 @@ app.get('/data', function(req, res){
 
 app.post('/phone', function(req, res) {
     console.log(req);
-    console.log(req.body);
-    //twilio.sms.messages.post({
-    //    to: req.body.number,
-    //    from:'+12108800132',
-    //    body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
-    //    "ADDRESS:"+ os.EOL + "STATUS:"
-    //}, function(err, text) {
-    //    console.log("oh no");
-    //}, function() {
-    //    res.body = "works";
-    //    res.writeHead(200, {'Content-Type': 'application/json'});
-    //    res.end();
-    //
-    //});
+    console.log("number " + req.body.number);
+    twilio.sms.messages.post({
+        to: req.body.number,
+        from:'+12108800132',
+        body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
+        "ADDRESS:"+ os.EOL + "STATUS:"
+    }, function(err, text) {
+        res.body.numberIsValid = false;
+        res.writeHead(404, {'Content-Type': 'application/json'});
+        res.end();
+    }, function() {
+        res.body.numberIsValid = true;
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end();
+
+    });
 
 });
+// init
 
 // Initializes the server
 app.listen(8080, function() {
@@ -135,7 +139,7 @@ app.listen(8080, function() {
   twilio.messages.create({
     body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
     "ADDRESS:"+ os.EOL + "STATUS:",
-    to: "+15094329908",
+    to: "+12102683553",
     from: "+12108800132"
   }, function(err, message) {
     process.stdout.write(message.sid);
