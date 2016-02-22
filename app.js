@@ -108,7 +108,6 @@ app.get('/data', function(req, res){
 });
 
 app.post('/phone', function(req, res) {
-    console.log(req);
     console.log("number " + req.body.number);
     twilio.sms.messages.post({
         to: req.body.number,
