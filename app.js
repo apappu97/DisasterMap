@@ -45,8 +45,8 @@ app.post('/sms', function(req, res) {
   var addr = "";
   var status = "";
   var finalstring = req.body.Body;
-  addr = S(finalstring).between('ADDRESS: ', 'STATUS: ').s;
-  status = S(finalstring).between('STATUS:').s;
+  addr = S(finalstring.toUpperCase()).between('ADDRESS: ', 'STATUS: ').humanize().s;
+  status = S(finalstring.toUpperCase()).between('STATUS:').humanize().s;
     if (addr == "" || status == "") {
         twiml.message("That doesn't follow the format of:" +
             os.EOL + "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Please try again");
@@ -86,7 +86,6 @@ app.post('/sms', function(req, res) {
                 if(err) throw err;
                 console.log('User saved successfully!');
               });
-
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
             });
@@ -96,7 +95,6 @@ app.post('/sms', function(req, res) {
 app.get('/data', function(req, res){
     Person.find({}, function(err, markers) {
         var markerMap = [];
-
         markers.forEach(function(marker) {
             markerMap.push(marker);
         });
@@ -107,25 +105,16 @@ app.get('/data', function(req, res){
     });
 });
 
-function sendMssg(num) {
-    twilio.messages.create({
-        body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
-        "ADDRESS:"+ os.EOL + "STATUS:",
-        to: num,
-        from: "+12108800132"
-    });
-}
 
 app.post('/phone', function(req, res) {
     console.log("number " + req.body.number);
-    //sendMssg(req.body.number);
     var num = req.body.number;
     JSON.stringify(num);
     twilio.sms.messages.create({
         to: num,
         from:"+12108800132",
-        body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
-        "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food";
+        body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
+        "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food";
     }, function(error, message) {
         // The HTTP request to Twilio will run asynchronously. This callback
         // function will be called when a response is received from Twilio
@@ -157,8 +146,8 @@ app.listen(8080, function() {
 });
 
   twilio.messages.create({
-    body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
-    "ADDRESS:"+ os.EOL + "STATUS:",
+    body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
+        "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food",
     to: "+12102683553",
     from: "+12108800132"
   }, function(err, message) {
