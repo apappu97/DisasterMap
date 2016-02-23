@@ -144,7 +144,6 @@ app.listen(8080, function() {
   Person.remove({}, function(err) { 
    console.log('collection removed') 
 });
-
   twilio.messages.create({
     body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food",
