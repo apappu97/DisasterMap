@@ -114,7 +114,7 @@ app.post('/phone', function(req, res) {
         to: num,
         from:"+12108800132",
         body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
-        "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food";
+        "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food"
     }, function(error, message) {
         // The HTTP request to Twilio will run asynchronously. This callback
         // function will be called when a response is received from Twilio
