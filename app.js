@@ -73,7 +73,7 @@ app.post('/sms', function(req, res) {
             .end(function (response, lng) {
               lng = response.body.results[0].geometry.location.lng;
               twiml.message("We received your request. You inputed your address as:" + os.EOL
-                  + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng + ". Your pin has been dropped on the global map!");
+                  + addr + os.EOL + "and your status as:" + os.EOL + status + os.EOL +". Your coordinates are: " + lat + ", " + lng + ". Your pin has been dropped on the global map!");
               console.log("Typeof LNG;" + typeof(lng));
                 status += " (This status was sent from the number: " + req.body.From + ")";
                 var person = new Person({
