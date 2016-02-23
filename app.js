@@ -110,7 +110,7 @@ app.post('/phone', function(req, res) {
     console.log("number " + req.body.number);
     var num = req.body.number;
     JSON.stringify(num);
-    twilio.sms.messages.create({
+    twilio.messages.create({
         to: num,
         from:"+12108800132",
         body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
