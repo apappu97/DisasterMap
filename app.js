@@ -16,9 +16,9 @@ var S = require('string');
 var app = express();
 
 // API keys, etc.
-var accountSid = config.accountSid;
-var authToken = config.authToken;
-var mapKey = config.mapKey;
+// var accountSid = config.accountSid;
+// var authToken = config.authToken;
+// var mapKey = config.mapKey;
 var twilio = require('twilio')(accountSid, authToken);
 
 //var coordinates = [];
