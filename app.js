@@ -8,19 +8,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var Person = require('./models/location');
-var config = require('./config');
 mongoose.connect('mongodb://heroku_h1mbknwv:s8d03rgc20qjhls0kh2ep66em@ds049848.mongolab.com:49848/heroku_h1mbknwv');
-
+var com = require('./common');
+var config = com.config();
 var os = require('os');
 var S = require('string');
 var app = express();
 
 // API keys, etc.
-var accountSid = config.accountSid;
-var authToken = config.authToken;
+console.log(config.TWILIO_ACCOUNT_SID);
+console.log(config.TWILIO_AUTH_TOKEN);
+var twilio = require('twilio')(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
 var mapKey = config.mapKey;
-var twilio = require('twilio')(accountSid, authToken);
-
 //var coordinates = [];
 
 // view engine setup
@@ -69,6 +68,7 @@ app.post('/sms', function(req, res) {
               res.end(twiml.toString());
               return;
           }
+
         lat = response.body.results[0].geometry.location.lat;
         console.log("Typeof lat;" + typeof(lat));
         unirest.get(address, lng)
