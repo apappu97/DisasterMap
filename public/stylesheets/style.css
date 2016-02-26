@@ -1,8 +1,44 @@
+html, body { height: 100%; margin: 0; padding: 0; }
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding: 50px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
+}
+
+h1 {
+	font-size: 40px;
+	font-family: Lato, Helvetica, Arial, sans-serif;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+}
+
+h2 {
+	font-size: 20px;
+	font-family: Lato, Helvetica, Arial, sans-serif;
+}
+
+#map {
+	margin-bottom: 50px;
+	margin-top: 25px;
+	height: 60%;
+}
+
+
+button {
+
+	font-size: 50px;
+}
+
+#input-btn{
+	font-size: 24px;
+}
+
+p {
+	font-size: 18px;
+	margin-top: 25px;
 }

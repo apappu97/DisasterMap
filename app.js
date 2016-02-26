@@ -1,4 +1,4 @@
-
+require('newrelic');
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -47,8 +47,8 @@ app.post('/sms', function(req, res) {
   var addr = "";
   var status = "";
   var finalstring = req.body.Body;
-  addr = S(finalstring).between('ADDRESS: ', 'STATUS: ').s;
-  status = S(finalstring).between('STATUS:').s;
+  addr = S(finalstring.toUpperCase()).between('ADDRESS: ', 'STATUS: ').humanize().s;
+  status = S(finalstring.toUpperCase()).between('STATUS:').humanize().s;
     if (addr == "" || status == "") {
         twiml.message("That doesn't follow the format of:" +
             os.EOL + "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Please try again");
@@ -75,7 +75,7 @@ app.post('/sms', function(req, res) {
             .end(function (response, lng) {
               lng = response.body.results[0].geometry.location.lng;
               twiml.message("We received your request. You inputed your address as:" + os.EOL
-                  + addr + os.EOL + "and your status as:" + os.EOL + status + ". Your coordinates are: " + lat + ", " + lng);
+                  + addr + os.EOL + "and your status as:" + os.EOL + status + os.EOL +". Your coordinates are: " + lat + ", " + lng + ". Your pin has been dropped on the global map!");
               console.log("Typeof LNG;" + typeof(lng));
                 status += " (This status was sent from the number: " + req.body.From + ")";
                 var person = new Person({
@@ -86,10 +86,8 @@ app.post('/sms', function(req, res) {
               console.log(person);
               person.save(function(err){
                 if(err) throw err;
-
                 console.log('User saved successfully!');
               });
-
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
             });
@@ -99,7 +97,6 @@ app.post('/sms', function(req, res) {
 app.get('/data', function(req, res){
     Person.find({}, function(err, markers) {
         var markerMap = [];
-
         markers.forEach(function(marker) {
             markerMap.push(marker);
         });
@@ -110,38 +107,46 @@ app.get('/data', function(req, res){
     });
 });
 
-app.post('/phone', function(req, res) {
-    console.log(req);
-    console.log("number " + req.body.number);
-    twilio.sms.messages.post({
-        to: req.body.number,
-        from:'+12108800132',
-        body:"This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
-        "ADDRESS:"+ os.EOL + "STATUS:"
-    }, function(err, text) {
-        res.body.numberIsValid = false;
-        res.writeHead(404, {'Content-Type': 'application/json'});
-        res.end();
-    }, function() {
-        res.body.numberIsValid = true;
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end();
 
+app.post('/phone', function(req, res) {
+    console.log("number " + req.body.number);
+    var num = req.body.number;
+    JSON.stringify(num);
+    twilio.messages.create({
+        to: num,
+        from:"+12108800132",
+        body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
+        "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food"
+    }, function(error, message) {
+        // The HTTP request to Twilio will run asynchronously. This callback
+        // function will be called when a response is received from Twilio
+        // The "error" variable will contain error information, if any.
+        // If the request was successful, this value will be "falsy"
+        if (!error) {
+            // The second argument to the callback will contain the information
+            // sent back by Twilio for the request. In this case, it is the
+            // information about the text messsage you just sent:
+            console.log('Success! The SID for this SMS message is:');
+            console.log(message.sid);
+
+            console.log('Message sent on:');
+            console.log(message.dateCreated);
+        } else {
+            console.log('Oops! There was an error.');
+        }
     });
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end();
 
 });
 // init
 
 // Initializes the server
 app.listen(8080, function() {
-  Person.remove({}, function(err) { 
-   console.log('collection removed') 
-});
-
   twilio.messages.create({
-    body: "This is a message from your local nonprofit. Please send us your address and needs in the following format."+ os.EOL +
-    "ADDRESS:"+ os.EOL + "STATUS:",
-    to: "+15094329908",
+    body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
+        "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food",
+    to: "+12102683553",
     from: "+12108800132"
   }, function(err, message) {
     process.stdout.write(message.sid);
