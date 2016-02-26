@@ -16,7 +16,7 @@ var S = require('string');
 var app = express();
 
 // API keys, etc.
-var twilio = require('twilio')(process.env.accountSID, process.env.authToken);
+hevar twilio = require('twilio')(process.env.accountSID, process.env.authToken);
 var mapKey = process.env.mapKey;
 //var coordinates = [];
 
