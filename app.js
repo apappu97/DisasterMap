@@ -9,8 +9,6 @@ var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var Person = require('./models/location');
 mongoose.connect(process.env.MONGOLAB_URI);
-var com = require('./common');
-var config = com.config();
 var os = require('os');
 var S = require('string');
 var app = express();
