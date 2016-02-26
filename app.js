@@ -8,15 +8,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var Person = require('./models/location');
+var config = require('../configFiles/config');
 mongoose.connect('mongodb://heroku_h1mbknwv:s8d03rgc20qjhls0kh2ep66em@ds049848.mongolab.com:49848/heroku_h1mbknwv');
 
 var os = require('os');
 var S = require('string');
 var app = express();
 
-
-var accountSid = 'AC2a8b15d166303da6d57a97dcc25f3b3e';
-var authToken = "0f73d916916b73a1786aee7c951df1a8";
+// API keys, etc.
+var accountSid = config.accountSid;
+var authToken = config.authToken;
+var mapKey = config.mapKey;
 var twilio = require('twilio')(accountSid, authToken);
 
 //var coordinates = [];
@@ -54,7 +56,7 @@ app.post('/sms', function(req, res) {
         res.end(twiml.toString());
         return;
     }
-  var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + "&key=AIzaSyChCIMnLJFcujELe5FdvrAKuYCMG9IJJDc";
+  var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + mapKey;
   // THESE STORE THE LATITUDE AND LONGITUDE
   var lat = 0;
   var lng = 0;
