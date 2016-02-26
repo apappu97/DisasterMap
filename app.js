@@ -8,7 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var Person = require('./models/location');
-mongoose.connect(MONGOLAB_URI);
+mongoose.connect(process.env.MONGOLAB_URI);
 var com = require('./common');
 var config = com.config();
 var os = require('os');
@@ -16,10 +16,8 @@ var S = require('string');
 var app = express();
 
 // API keys, etc.
-console.log(accountSID);
-console.log(authToken);
-var twilio = require('twilio')(accountSID, authToken);
-var mapKey = mapKey;
+var twilio = require('twilio')(process.env.accountSID, process.env.authToken);
+var mapKey = process.env.mapKey;
 //var coordinates = [];
 
 // view engine setup
