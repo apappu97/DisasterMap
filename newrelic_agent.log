@@ -10,3 +10,6 @@
 {"v":0,"level":30,"name":"newrelic","hostname":"rescomp-15-311924.stanford.edu","pid":19216,"time":"2016-02-26T07:11:18.595Z","msg":"Starting New Relic for Node.js connection process."}
 {"v":0,"level":30,"name":"newrelic","hostname":"rescomp-15-311924.stanford.edu","pid":19216,"time":"2016-02-26T07:11:21.518Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1251102/applications/19647686","component":"new_relic_response"}
 {"v":0,"level":30,"name":"newrelic","hostname":"rescomp-15-311924.stanford.edu","pid":19216,"time":"2016-02-26T07:11:21.520Z","msg":"Connected to collector-133.newrelic.com:443 with agent run ID 85485282179885680.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"rescomp-15-311924.stanford.edu","pid":19935,"time":"2016-02-26T07:19:27.827Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"rescomp-15-311924.stanford.edu","pid":19935,"time":"2016-02-26T07:19:32.010Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1251102/applications/19647686","component":"new_relic_response"}
+{"v":0,"level":30,"name":"newrelic","hostname":"rescomp-15-311924.stanford.edu","pid":19935,"time":"2016-02-26T07:19:32.011Z","msg":"Connected to collector-133.newrelic.com:443 with agent run ID 85485282179908560.","component":"collector_api"}
