@@ -1,3 +1,4 @@
+// Included libraries
 require('newrelic');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -13,10 +14,9 @@ var os = require('os');
 var S = require('string');
 var app = express();
 
-// API keys, etc.
+// API keys referenced from configuration file (hidden from public repository)
 var twilio = require('twilio')(process.env.accountSID, process.env.authToken);
 var mapKey = process.env.mapKey;
-//var coordinates = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,9 +33,14 @@ app.get('/', function(req, res){
   res.render('/public/index.html');
 });
 
-// Route for handling text messages from users - twilio API sends post request to designated route
+/*
+    /sms
+    Route for handling text messages from users
+    Twilio API hits this endpoint when a text is received to the registered number.
+    Contains error checking code based on the text message input. Saves to database
+    upon successful geocoding and sends Twilio a response to send to the user
+*/
 app.post('/sms', function(req, res) {
-    console.log("we received a text from: " + req.body.From);
   var twilio = require('twilio');
   var twiml = new twilio.TwimlResponse(); // Initialize object - holds response that user receives later
   var addr = "";
@@ -57,7 +62,6 @@ app.post('/sms', function(req, res) {
   // Vars that store latitude and longitude
   var lat = 0;
   var lng = 0;
-
   // Obtain latitude from Maps Reverse Geocoding API
   unirest.get(address, lat)
       .end(function (response, lat) {
@@ -68,9 +72,7 @@ app.post('/sms', function(req, res) {
               res.end(twiml.toString());
               return;
           }
-
         lat = response.body.results[0].geometry.location.lat;
-
         // Obtain longitude from Maps Reverse Geocoding API
         unirest.get(address, lng)
             .end(function (response, lng) {
@@ -99,7 +101,12 @@ app.post('/sms', function(req, res) {
       });
 });
 
-// Route for obtaining person marker data in database - query comes from map.js front-end
+/*
+     /data
+     Route for obtaining person marker data in database
+     The client hits this endpoint routinely to determine if there are new entries in the map.
+     Responds with JSON encoded data for the different markers
+*/
 app.get('/data', function(req, res){
     // Obtains all documents in database
     Person.find({}, function(err, markers) {
@@ -113,14 +120,21 @@ app.get('/data', function(req, res){
     });
 });
 
-// Creates initial message to send to users - twilio queries app upon startup
+/*
+     /phone
+     Route for handling new phone numbers for demo
+     Client hits this endpoint when wanting a demo of DisasterMap.
+     Hits Twilio to send a message from the registered number with instructions
+     on how to interface with the application through SMS.
+*/
 app.post('/phone', function(req, res) {
     console.log("number " + req.body.number);
     var num = req.body.number;
     JSON.stringify(num);
     twilio.messages.create({
         to: num,
-        from:"+12108800132",
+        // edit number below that you bought from Twilio
+        from:"+12345678901",
         body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food"
     }, function(error, message) {
@@ -151,8 +165,10 @@ app.listen(8080, function() {
   twilio.messages.create({
     body:"This is a message from DisasterMap. Please send us your address and needs in the following format for your pin to be placed on the map."+ os.EOL +
         "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Here is an example response:" + os.EOL + "ADDRESS: 123 Main Street, New York City, New York, USA" + os.EOL + "STATUS: I need some water and food",
-    to: "+12102683553",
-    from: "+12108800132"
+    // edit number to send upon server starting up (mainly for testing)
+      to: "+12345678901",
+      // edit number below that you bought from Twilio
+    from: "+12345678901"
   }, function(err, message) {
     process.stdout.write(message.sid);
   });
