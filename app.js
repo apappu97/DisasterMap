@@ -13,12 +13,10 @@ var os = require('os');
 var S = require('string');
 var app = express();
 
-<<<<<<< HEAD
 // API keys, etc.
 var twilio = require('twilio')(process.env.accountSID, process.env.authToken);
 var mapKey = process.env.mapKey;
 //var coordinates = [];
->>>>>>> ec036ac0c40f108590e910cd7302db3a0c25d31e
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
