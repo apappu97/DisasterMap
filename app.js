@@ -15,40 +15,39 @@ var os = require('os');
 var S = require('string');
 var app = express();
 
-// API keys, etc.
+// API keys for twilio and Google Maps
 var accountSid = config.accountSid;
 var authToken = config.authToken;
 var mapKey = config.mapKey;
 var twilio = require('twilio')(accountSid, authToken);
 
-//var coordinates = [];
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+//Render home page
 app.get('/', function(req, res){
   res.render('/public/index.html');
 });
 
+// Route for handling text messages from users - twilio API sends post request to designated route
 app.post('/sms', function(req, res) {
     console.log("we received a text from: " + req.body.From);
   var twilio = require('twilio');
-  var twiml = new twilio.TwimlResponse();
+  var twiml = new twilio.TwimlResponse(); // Initialize object - holds response that user receives later
   var addr = "";
   var status = "";
   var finalstring = req.body.Body;
+  // obtain address and status of user
   addr = S(finalstring.toUpperCase()).between('ADDRESS: ', 'STATUS: ').humanize().s;
   status = S(finalstring.toUpperCase()).between('STATUS:').humanize().s;
+  // Error checking on address and status.
     if (addr == "" || status == "") {
         twiml.message("That doesn't follow the format of:" +
             os.EOL + "ADDRESS:"+ os.EOL + "STATUS:" + os.EOL + "Please try again");
@@ -56,10 +55,13 @@ app.post('/sms', function(req, res) {
         res.end(twiml.toString());
         return;
     }
+  // GoogleMaps URL to make request to to obtain latitude and longtitude coordinates
   var address = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr.split(" ").join("+") + mapKey;
-  // THESE STORE THE LATITUDE AND LONGITUDE
+  // Vars that store latitude and longitude
   var lat = 0;
   var lng = 0;
+
+  // Obtain latitude from Maps Reverse Geocoding API
   unirest.get(address, lat)
       .end(function (response, lat) {
           if (response.body.results.length == 0) {
@@ -70,44 +72,50 @@ app.post('/sms', function(req, res) {
               return;
           }
         lat = response.body.results[0].geometry.location.lat;
-        console.log("Typeof lat;" + typeof(lat));
+
+        // Obtain longitude from Maps Reverse Geocoding API
         unirest.get(address, lng)
             .end(function (response, lng) {
               lng = response.body.results[0].geometry.location.lng;
               twiml.message("We received your request. You inputed your address as:" + os.EOL
                   + addr + os.EOL + "and your status as:" + os.EOL + status + os.EOL +". Your coordinates are: " + lat + ", " + lng + ". Your pin has been dropped on the global map!");
-              console.log("Typeof LNG;" + typeof(lng));
                 status += " (This status was sent from the number: " + req.body.From + ")";
-                var person = new Person({
+                
+              // Create new person object to represent user
+              var person = new Person({
                 latitude: lat,
                 longitude: lng,
                 contentBody: status
               });
-              console.log(person);
+
+              //Save to mongo database
               person.save(function(err){
                 if(err) throw err;
                 console.log('User saved successfully!');
               });
+
+              // Send end message back to user
               res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(twiml.toString());
             });
       });
 });
 
+// Route for obtaining person marker data in database - query comes from map.js front-end
 app.get('/data', function(req, res){
+    // Obtains all documents in database
     Person.find({}, function(err, markers) {
         var markerMap = [];
         markers.forEach(function(marker) {
             markerMap.push(marker);
         });
         var dataJSON = JSON.stringify(markerMap);
-        console.log("datajason " + dataJSON);
         res.writeHead(200, {'Content-Type': 'application/json'});
         res.end(dataJSON);
     });
 });
 
-
+// Creates initial message to send to users - twilio queries app upon startup
 app.post('/phone', function(req, res) {
     console.log("number " + req.body.number);
     var num = req.body.number;
@@ -139,7 +147,6 @@ app.post('/phone', function(req, res) {
     res.end();
 
 });
-// init
 
 // Initializes the server
 app.listen(8080, function() {
