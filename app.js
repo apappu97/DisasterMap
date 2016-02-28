@@ -8,18 +8,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var Person = require('./models/location');
-var config = require('./config');
-mongoose.connect('mongodb://heroku_h1mbknwv:s8d03rgc20qjhls0kh2ep66em@ds049848.mongolab.com:49848/heroku_h1mbknwv');
-
+mongoose.connect(process.env.MONGOLAB_URI);
 var os = require('os');
 var S = require('string');
 var app = express();
 
-// API keys for twilio and Google Maps
-var accountSid = config.accountSid;
-var authToken = config.authToken;
-var mapKey = config.mapKey;
-var twilio = require('twilio')(accountSid, authToken);
+<<<<<<< HEAD
+// API keys, etc.
+var twilio = require('twilio')(process.env.accountSID, process.env.authToken);
+var mapKey = process.env.mapKey;
+//var coordinates = [];
+>>>>>>> ec036ac0c40f108590e910cd7302db3a0c25d31e
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -71,6 +70,7 @@ app.post('/sms', function(req, res) {
               res.end(twiml.toString());
               return;
           }
+
         lat = response.body.results[0].geometry.location.lat;
 
         // Obtain longitude from Maps Reverse Geocoding API
